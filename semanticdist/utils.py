@@ -23,4 +23,4 @@ def save_data(data, pickle_file, context):
 
 def load_data(pickle_file, context):
     with open(context['gdrive_path'] + pickle_file, 'rb') as handle:
-        return pickle.load(handle, protocol=pickle.HIGHEST_PROTOCOL)
+        return pickle.load(handle)
