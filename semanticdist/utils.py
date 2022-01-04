@@ -69,7 +69,7 @@ def prep_videovote_sheet(data, pairs, tab, context, existing=None):
 
     vvdata[['id_a','id_b']]=np.sort(vvdata[['id_a','id_b']].values,axis=1)
     if existing != None:
-        vvdata = vvdata[(vvdata.id_a, vvdata.id_a) not in existing]
+        vvdata = vvdata[[(r.id_a, r.id_b) not in existing for i, r in vvdata.iterrows()]]
 
     ss = context['gspread_client'].open("Videovote backend")
     try:
