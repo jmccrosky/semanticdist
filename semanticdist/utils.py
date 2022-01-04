@@ -83,3 +83,14 @@ def init_eval_pickle(name, context):
     temp = {}
     with open(context['gdrive_path'] + name, 'wb') as handle:
         pickle.dump(temp, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+def update_eval_data(eval_data, sheet, context):
+    ws = context['gspread_client'].open("Videovote backend").worksheet(sheet)
+    new_eval_data = gd.get_as_dataframe(ws).dropna(axis=1, how='all').dropna(how='all')
+    for i, r in new_eval_data.iterrows():
+        key = (r.id_a, r.id_b)
+        if key in eval_data:
+            eval_data[key] = eval_data[key] + [r.vote]
+        else:
+            eval_data[key] = [r.vote]
+    return eval_data
