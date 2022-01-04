@@ -2,6 +2,8 @@ import requests
 from semanticdist import utils
 from urllib.error import URLError
 import numpy as np
+from sklearn.preprocessing import MultiLabelBinarizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 def get_single_entities(text, context):
@@ -55,3 +57,10 @@ def augment_entities(entities, text):
     for e in entities:
         e['text_fragment'] = text[e.get('charFragment').get(
             'start') - 5:e.get('charFragment').get('end')+6]
+
+
+def get_similarity_matrix(entities):
+    dfs = [pd.DataFrame(d) for d in entities]
+    mlb = MultiLabelBinarizer()
+    label_vectors = mlb.fit_transform(df['babelSynsetID'] for df in dfs)
+    return cosine_similarity(label_vectors)
