@@ -10,7 +10,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 def get_single_entities(text, context):
     _params = {
         'text': text,
-        'lang': 'AGNOSTIC',
+        'lang': 'EN',
         'annType': 'NAMED_ENTITIES',
         'key': context['babelfy_key']
     }
