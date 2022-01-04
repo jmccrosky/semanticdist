@@ -50,7 +50,7 @@ def get_indices_of_k_largest(arr, k):
     return tuple(np.array(np.unravel_index(idx, arr.shape))[:, range(min(k, 0), max(k, 0))])
 
 
-def prep_videovote_sheet(data, pairs, tab, context):
+def prep_videovote_sheet(data, pairs, tab, context, existing=None):
     left = data.iloc[pairs[0]].reset_index()
     right = data.iloc[pairs[1]].reset_index()
 
@@ -67,6 +67,10 @@ def prep_videovote_sheet(data, pairs, tab, context):
 
     })
 
+    vvdata[['id_a','id_b']]=np.sort(vvdata[['id_a','id_b']].values,axis=1)
+    if existing != None:
+        vvdata = vvdata[(vvdata.id_a, vvdata.id_a) not in existing]
+
     ss = context['gspread_client'].open("Videovote backend")
     try:
         ws = ss.add_worksheet(tab, rows=len(vvdata), cols="9")
@@ -74,3 +78,8 @@ def prep_videovote_sheet(data, pairs, tab, context):
         pass
     gd.set_with_dataframe(ws, vvdata.reset_index(
         drop=True), include_index=False)
+
+def init_eval_pickle(name, context):
+    temp = {}
+    with open(context['gdrive_path'] + name, 'wb') as handle:
+        pickle.dump(temp, handle, protocol=pickle.HIGHEST_PROTOCOL)
