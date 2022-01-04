@@ -13,4 +13,4 @@ def get_embeddings(data, part, context, pickle_file=None):
 
 
 def get_similarity_matrix(embeddings):
-    return cosine_similarity(embeddings)
+    return cosine_similarity(list(embeddings))
