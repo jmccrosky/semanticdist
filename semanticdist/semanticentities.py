@@ -2,7 +2,7 @@ import requests
 from semanticdist import utils
 from urllib.error import URLError
 import numpy as np
-import pnadas as pd
+import pandas as pd
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.metrics.pairwise import cosine_similarity
 
