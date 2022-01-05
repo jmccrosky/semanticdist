@@ -75,7 +75,7 @@ def prep_videovote_sheet(data, pairs, tab, context, existing=None):
     try:
         ws = ss.add_worksheet(tab, rows=len(vvdata), cols="9")
     except Exception:
-        pass
+        ws = ss.worksheet(tab)
     gd.set_with_dataframe(ws, vvdata.reset_index(
         drop=True), include_index=False)
 
