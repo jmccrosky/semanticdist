@@ -22,6 +22,23 @@ def get_raw_data(context):
         bqstorage_client=context['bq_storage_client']
     )
 
+def update_from_raw_data(data, context):
+    _query = '''
+        SELECT
+            *
+        FROM
+            `moz-fx-data-shared-prod.regrets_reporter_analysis.yt_api_data_v7`
+        WHERE
+            transcript != ''
+            AND takedown = FALSE
+    '''
+    new_data = context['bq_client'].query(
+        _query
+    ).result(
+    ).to_dataframe(
+        bqstorage_client=context['bq_storage_client']
+    ).loc[lambda d: ~ d.video_id.isin(data.video_id)]
+    return pd.concat([data, new_data])
 
 def save_data(data, pickle_file, context):
     with open(context['gdrive_path'] + pickle_file, 'wb') as handle:
