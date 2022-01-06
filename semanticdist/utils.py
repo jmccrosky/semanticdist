@@ -27,7 +27,7 @@ def get_raw_data(context):
     unique_rows = len(data)
     if total_rows != unique_rows:
         print(
-            f"Warning: raw table has {total_rows - unique_rows} duplicate rows or {(total_rows - unique_rows) / unique_rows}%.")
+            f"Warning: raw table has {total_rows - unique_rows} duplicate rows or {100 * (total_rows - unique_rows) / unique_rows}%.")
     return data
 
 
