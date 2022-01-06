@@ -41,7 +41,7 @@ def get_entities(data, part, context, pickle_file=None):
             print(f"Looking for index {i}")
             e = get_single_entities(
                 data.loc[i, part], context)
-        except (URLError, requests.TimeoutError):
+        except (URLError, requests.Timeout):
             print("Semantic entity request failed with urlerror.")
             break
         if e is None:
