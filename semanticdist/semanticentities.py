@@ -1,6 +1,6 @@
 import requests
 from semanticdist import utils
-from urllib.error import URLError, TimeoutError
+from urllib.error import URLError
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MultiLabelBinarizer
@@ -41,7 +41,7 @@ def get_entities(data, part, context, pickle_file=None):
             print(f"Looking for index {i}")
             e = get_single_entities(
                 data.loc[i, part], context)
-        except (URLError, TimeoutError):
+        except (URLError, requests.TimeoutError):
             print("Semantic entity request failed with urlerror.")
             break
         if e is None:
