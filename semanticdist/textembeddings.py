@@ -15,10 +15,11 @@ def get_embeddings(data, part, context, pickle_file=None):
     embeddings = list(context['language_model'].encode(
         texts, show_progress_bar=True))
     for i in range(len(needed_indexes)):
-      data.at[needed_indexes[i], f'{part}_embedding'] = embeddings[i]
+        data.at[needed_indexes[i], f'{part}_embedding'] = embeddings[i]
     count_after = len(data[~data[f'{part}_embedding'].isnull()])
     if count_after != count_before + len(needed_indexes):
-        print(f"Warning: counts are wrong.  Pickle not saved. {count_after} {count_before} {len(needed_indexes)}")
+        print(
+            f"Warning: counts are wrong.  Pickle not saved. {count_after} {count_before} {len(needed_indexes)}")
         return data
     if pickle_file is not None:
         utils.save_data(data, pickle_file, context)

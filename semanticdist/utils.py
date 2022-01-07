@@ -56,7 +56,7 @@ def update_from_raw_data(data, context):
 
 def save_data(data, pickle_file, context):
     with open(context['gdrive_path'] + pickle_file, 'wb') as handle:
-        pickle.dump(data.reset_index(), handle,
+        pickle.dump(data.reset_index(drop=True), handle,
                     protocol=pickle.HIGHEST_PROTOCOL)
 
 

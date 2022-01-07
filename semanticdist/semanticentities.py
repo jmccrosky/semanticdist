@@ -41,7 +41,7 @@ def get_entities(data, part, context, pickle_file=None):
             print(f"Looking for index {i}")
             e = get_single_entities(
                 data.loc[i, part], context)
-        except (URLError, TimeoutError):
+        except (URLError, TimeoutError, requests.exceptions.RequestException):
             print("Semantic entity request failed with urlerror.")
             break
         if e is None:
@@ -55,7 +55,8 @@ def get_entities(data, part, context, pickle_file=None):
         entities, dtype=object)
     count_after = len(data[~data[f'{part}_entities'].isnull()])
     if count_after != count_before + acquired_count:
-        print(f"Warning: counts are wrong.  Pickle not saved. {count_after} {count_before} {acquired_count}")
+        print(
+            f"Warning: counts are wrong.  Pickle not saved. {count_after} {count_before} {acquired_count}")
         return data
     if pickle_file is not None:
         utils.save_data(data, pickle_file, context)
