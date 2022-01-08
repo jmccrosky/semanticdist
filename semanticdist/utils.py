@@ -56,7 +56,7 @@ def update_from_raw_data(data, context):
 
 def save_data(data, pickle_file, context):
     with open(context['gdrive_path'] + pickle_file, 'wb') as handle:
-        pickle.dump(data.reset_index(drop=True), handle,
+        pickle.dump(data, handle,
                     protocol=pickle.HIGHEST_PROTOCOL)
 
 
@@ -99,7 +99,11 @@ def prep_videovote_sheet(data, pairs, tab, context, existing=None):
 
     })
 
-    vvdata[['id_a', 'id_b']] = np.sort(vvdata[['id_a', 'id_b']].values, axis=1)
+    for i, r in vvdata.iterrows():
+      if r.id_a > r.id_b:
+        temp = (r.title_a, r.channel_a, r.description_a, r.id_a)
+        (r.title_a, r.channel_a, r.description_a, r.id_a) = (r.title_b, r.channel_b, r.description_b, r.id_b)
+        (r.title_b, r.channel_b, r.description_b, r.id_b) = temp
     if existing != None:
         vvdata = vvdata[[(r.id_a, r.id_b) not in existing for i,
                          r in vvdata.iterrows()]]
