@@ -3,6 +3,7 @@ import plotly.express as px
 import numpy as np
 import gspread_dataframe as gd
 import pandas as pd
+from scipy.spatial.distance import pdist, squareform
 
 
 def get_raw_data(context):
@@ -100,10 +101,11 @@ def prep_videovote_sheet(data, pairs, tab, context, existing=None):
     })
 
     for i, r in vvdata.iterrows():
-      if r.id_a > r.id_b:
-        temp = (r.title_a, r.channel_a, r.description_a, r.id_a)
-        (r.title_a, r.channel_a, r.description_a, r.id_a) = (r.title_b, r.channel_b, r.description_b, r.id_b)
-        (r.title_b, r.channel_b, r.description_b, r.id_b) = temp
+        if r.id_a > r.id_b:
+            temp = (r.title_a, r.channel_a, r.description_a, r.id_a)
+            (r.title_a, r.channel_a, r.description_a, r.id_a) = (
+                r.title_b, r.channel_b, r.description_b, r.id_b)
+            (r.title_b, r.channel_b, r.description_b, r.id_b) = temp
     if existing != None:
         vvdata = vvdata[[(r.id_a, r.id_b) not in existing for i,
                          r in vvdata.iterrows()]]
@@ -134,3 +136,8 @@ def update_eval_data(eval_data, sheet, context):
         else:
             eval_data[key] = [r.vote]
     return eval_data
+
+
+def get_equality_matrix(data, part):
+    d = pdist([[i] for i in data[part]], lambda x, y: 1 if x == y else 0)
+    return squareform(d)
