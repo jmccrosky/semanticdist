@@ -141,3 +141,19 @@ def update_eval_data(eval_data, sheet, context):
 def get_equality_matrix(data, part):
     d = pdist([[i] for i in data[part]], lambda x, y: 1 if x == y else 0)
     return squareform(d)
+
+
+def print_data_diagnostics(data):
+    n = len(data)
+    print(f"Data is length {n}")
+    possible_parts = ["title", "transcript", "description"]
+    possible_types = ["embedding", "entities"]
+    dups = len(data[data.video_id.duplicated()])
+    if dups != 0:
+        print(f"Warning! {dups} dupes detected.")
+    for part in possible_parts:
+        for type in possible_types:
+            if f"{part}_{type}" in data:
+                nv = data[f"{part}_{type}"].isnull().sum()
+                print(
+                    f"Data has {part}_{type} for {n-nv} rows or {(n-nv)/n * 100}%")
