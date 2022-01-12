@@ -13,7 +13,6 @@ def get_raw_data(context):
         FROM
             `moz-fx-data-shared-prod.regrets_reporter_analysis.yt_api_data_v7`
         WHERE
-            transcript != ''
             AND takedown = FALSE
     '''
     data = context['bq_client'].query(
@@ -39,7 +38,6 @@ def update_from_raw_data(data, context):
         FROM
             `moz-fx-data-shared-prod.regrets_reporter_analysis.yt_api_data_v7`
         WHERE
-            transcript != ''
             AND takedown = FALSE
     '''
     new_data = context['bq_client'].query(
