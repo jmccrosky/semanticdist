@@ -144,14 +144,17 @@ def get_equality_matrix(data, part):
 def print_data_diagnostics(data):
     n = len(data)
     print(f"Data is length {n}")
+    nt = len(data[data.transcript.str.len() > 0])
+    print(f"With transcripts: {nt}")
     possible_parts = ["title", "transcript", "description"]
     possible_types = ["embedding", "entities"]
     dups = len(data[data.video_id.duplicated()])
     if dups != 0:
         print(f"Warning! {dups} dupes detected.")
     for part in possible_parts:
+        ap_n = nt if part == "transcript" else n
         for type in possible_types:
             if f"{part}_{type}" in data:
                 nv = data[f"{part}_{type}"].isnull().sum()
                 print(
-                    f"Data has {part}_{type} for {n-nv} rows or {(n-nv)/n * 100}%")
+                    f"Data has {part}_{type} for {n-nv} rows or {(n-nv)/ap_n * 100}%")
