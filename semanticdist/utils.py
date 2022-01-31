@@ -146,7 +146,7 @@ def print_data_diagnostics(data):
     print(f"Data is length {n}")
     nt = len(data[data.transcript.str.len() > 0])
     print(f"With transcripts: {nt}")
-    possible_parts = ["title", "transcript", "description"]
+    possible_parts = ["title", "transcript", "description", "thumbnail"]
     possible_types = ["embedding", "entities"]
     dups = len(data[data.video_id.duplicated()])
     if dups != 0:
